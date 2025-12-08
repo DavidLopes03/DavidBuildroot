@@ -1,0 +1,20 @@
+{
+    "name": "ses",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "toolchain",
+    "workspaceFolder": "/workspace",
+    "shutdownAction": "stopCompose",
+    "runArgs": ["--privileged"],
+    
+    // --- AJOUTEZ CECI ---
+    "containerEnv": {
+        "LDFLAGS": "-Wl,-no-pie"
+    },
+    // --------------------
+
+    "settings": {},
+    "extensions": [
+        "ms-vscode.cpptools"
+    ],
+    "remoteUser": "root"
+}
