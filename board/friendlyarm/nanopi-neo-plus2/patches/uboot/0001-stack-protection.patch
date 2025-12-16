@@ -1,0 +1,43 @@
+--- a/Makefile
++++ b/Makefile
+@@ -677,7 +677,7 @@
+ KBUILD_CFLAGS	+= -O2
+ endif
+ 
+-KBUILD_CFLAGS += $(call cc-option,-fno-stack-protector)
++KBUILD_CFLAGS += $(call cc-option,-fstack-protector-strong)
+ KBUILD_CFLAGS += $(call cc-option,-fno-delete-null-pointer-checks)
+ 
+ # disable stringop warnings in gcc 8+
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -119,4 +119,5 @@
+ obj-y += memsize.o
+ obj-y += stdio.o
++obj-y += stackprot.o
+ 
+ obj-$(CONFIG_CMD_ADTIMG) += image-android-dt.o
+--- /dev/null
++++ b/common/stackprot.c
+@@ -0,0 +1,20 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright 2021 Broadcom
++ */
++
++#include <common.h>
++#include <asm/global_data.h>
++
++DECLARE_GLOBAL_DATA_PTR;
++
++unsigned long __stack_chk_guard = (unsigned long)(0xfeedf00ddeadbeef & ~0UL);
++
++void __stack_chk_fail(void)
++{
++void *ra;
++
++ra = __builtin_extract_return_addr(__builtin_return_address(0));
++panic("Stack smashing detected in function:\n%p relocated from %p",
++ra, ra - gd->reloc_off);
++}
+\ No newline at end of file

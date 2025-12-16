@@ -5,12 +5,7 @@
     "workspaceFolder": "/workspace",
     "shutdownAction": "stopCompose",
     "runArgs": ["--privileged"],
-    
-    // --- AJOUTEZ CECI ---
-    "containerEnv": {
-        "LDFLAGS": "-Wl,-no-pie"
-    },
-    // --------------------
+
 
     "settings": {},
     "extensions": [
